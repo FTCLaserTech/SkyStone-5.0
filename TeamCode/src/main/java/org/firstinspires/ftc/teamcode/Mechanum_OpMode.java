@@ -41,7 +41,7 @@ public class Mechanum_OpMode extends LinearOpMode {
 
 
 
-    double lastAngleRad;
+    double lastAngle;
     //double                  globalAngle, power = .30, correction;
 
     double stickForward;
@@ -50,6 +50,9 @@ public class Mechanum_OpMode extends LinearOpMode {
 
     double stickForwardRotated;
     double stickSidewaysRotated;
+
+    int driveSetting = 0;
+    boolean driveSettingPressed;
 
 
     // Declare OpMode members.
@@ -71,39 +74,75 @@ public class Mechanum_OpMode extends LinearOpMode {
         //speed = speed - 0.1
         while (opModeIsActive())
         {
-              if(gamepad1.dpad_down == true) {
-                  speed = 4;
-              }
-              if(gamepad1.dpad_up == true) {
-                  speed = 10;
-              }
-              if(gamepad1.dpad_left == true ) {
-                  speed = 8;
-              }
-              if(gamepad1.dpad_right == true) {
-                  speed = 8;
-              }
+            if(gamepad1.dpad_down == true)
+            {
+                speed = 4;
+            }
+            if(gamepad1.dpad_up == true)
+            {
+                speed = 10;
+            }
+            if(gamepad1.dpad_left == true )
+            {
+                speed = 8;
+            }
+            if(gamepad1.dpad_right == true)
+            {
+                speed = 8;
+            }
 
-            lastAngleRad = hwmap.getAngle();
+            if(gamepad1.left_trigger > 0)
+            {
+                driveSettingPressed = true;
+            }
+            else if(driveSettingPressed == true)
+            {
+                driveSettingPressed = false;
+                driveSetting++;
+                if(driveSetting==2)
+                {
+                    driveSetting = 0;
+                }
+            }
+
+
+            lastAngle = hwmap.getAngle();
+
             // Reading joystick imputs
             stickForward = gamepad1.left_stick_y;
             stickSideways = gamepad1.left_stick_x;
             stickRotation = gamepad1.right_stick_x;
 
-            //swap functions
-            stickForwardRotated = (stickSideways * Math.sin(lastAngleRad)) + (stickForward * Math.cos(lastAngleRad));
-            stickSidewaysRotated = (stickSideways * Math.cos(lastAngleRad)) + (stickForward * Math.sin(lastAngleRad));
+            switch (driveSetting)
+            {
+                case 0:
+                    hwmap.frontLeftPower = stickForward - stickSideways+ stickRotation;
+                    hwmap.frontRightPower = stickForward + stickSideways - stickRotation;
+                    hwmap.backLeftPower = stickForward + stickSideways + stickRotation;
+                    hwmap.backRightPower = stickForward - stickSideways - stickRotation;
+                    break;
+                case 1:
+                    //swap functions
+                    stickSidewaysRotated = (stickSideways * Math.cos(lastAngle)) - (stickForward * Math.sin(lastAngle));
+                    stickForwardRotated = (stickSideways * Math.sin(lastAngle)) + (stickForward * Math.cos(lastAngle));
+
+                    telemetry.addData("Orig", "f (%.2f), s (%.2f)", stickForward, stickSideways);
+                    telemetry.addData("Rot ", "f (%.2f), s (%.2f)", stickForwardRotated, stickSidewaysRotated);
+
+                    //telemetry.addData("forward", stickForward, "sideways",);
 
 
-
-            hwmap.frontLeftPower = stickForwardRotated - stickSidewaysRotated + stickRotation;
-            hwmap.frontRightPower = stickForwardRotated + stickSidewaysRotated - stickRotation;
-            hwmap.backLeftPower = stickForwardRotated + stickSidewaysRotated + stickRotation;
-            hwmap.backRightPower = stickForwardRotated - stickSidewaysRotated - stickRotation;
-
+                    hwmap.frontLeftPower = stickForwardRotated - stickSidewaysRotated + stickRotation;
+                    hwmap.frontRightPower = stickForwardRotated + stickSidewaysRotated - stickRotation;
+                    hwmap.backLeftPower = stickForwardRotated + stickSidewaysRotated + stickRotation;
+                    hwmap.backRightPower = stickForwardRotated - stickSidewaysRotated - stickRotation;
+                    break;
+                default:
+                    driveSetting = 0;
+                    break;
+            }
 
             ArrayList<Double> motorList = new ArrayList<>(Arrays.asList(hwmap.frontLeftPower, hwmap.frontRightPower, hwmap.backLeftPower, hwmap.backRightPower));
-
 
             double highest = 0;
 
@@ -131,9 +170,7 @@ public class Mechanum_OpMode extends LinearOpMode {
             // Show the elapsed game time and wheel power (only works with code method two)
             telemetry.addData("Status", "Run Time: " + hwmap.runtime.toString());
             telemetry.addData("Wheel Power", "left (%.2f), right (%.2f)", hwmap.frontLeftPower, hwmap.frontRightPower, hwmap.backLeftPower, hwmap.backRightPower);
-            telemetry.addData("1 imu heading", lastAngleRad);
-            //telemetry.addData("2 global heading", globalAngle);
-            //telemetry.addData("3 correction", correction);
+            telemetry.addData("1 imu heading", lastAngle);
             telemetry.update();
         }
     }

@@ -61,7 +61,6 @@ import java.util.Arrays;
 
 public class Hardware_Map
 {
-
     // IMU variables
     public BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
     public Orientation lastAngles = new Orientation();
@@ -92,7 +91,7 @@ public class Hardware_Map
     {
 
         parameters.mode                = BNO055IMU.SensorMode.IMU;
-        parameters.angleUnit           = BNO055IMU.AngleUnit.RADIANS;
+        parameters.angleUnit           = BNO055IMU.AngleUnit.RADIANS;  //COULD DEGRESS OR RADIANS BE THE PROBLEM WITH THE ROTATION MATRIX
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.loggingEnabled      = false;
 
@@ -133,32 +132,6 @@ public class Hardware_Map
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
-
-    public double getAngle()
-    {
-        // We experimentally determined the Z axis is the axis we want to use for heading angle.
-        // We have to process the angle because the imu works in euler angles so the Z axis is
-        // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
-        // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
-
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
-
-        if (deltaAngle < -180)
-            deltaAngle += 360;
-        else if (deltaAngle > 180)
-            deltaAngle -= 360;
-
-        globalAngle += deltaAngle;
-
-        lastAngles = angles;
-
-        //return globalAngle;
-        return angles.firstAngle;
-    }
-
-
 
     // STRAFING METHODS
 
@@ -222,4 +195,27 @@ public class Hardware_Map
         backLeft.setPower(-power);
     }
 
+    public double getAngle()
+    {
+        // We experimentally determined the Z axis is the axis we want to use for heading angle.
+        // We have to process the angle because the imu works in euler angles so the Z axis is
+        // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
+        // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
+
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+
+        //double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+
+        //if (deltaAngle < -180)
+        //    deltaAngle += 360;
+        //else if (deltaAngle > 180)
+        //    deltaAngle -= 360;
+
+        //globalAngle += deltaAngle;
+
+        //lastAngles = angles;
+
+        //return globalAngle;
+        return angles.firstAngle;
+    }
 }
