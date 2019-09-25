@@ -33,6 +33,8 @@ import java.lang.Math;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -166,6 +168,8 @@ public class Mechanum_OpMode extends LinearOpMode {
             hwmap.backRight.setPower(hwmap.backRightPower);
 
 
+            telemetry.addData("Distance", hwmap.distanceSensor.getDistance(DistanceUnit.CM));
+            telemetry.addData("Color ","red (%d), green (%d), blue (%d)", hwmap.colorSensor.red(),hwmap.colorSensor.blue(),hwmap.colorSensor.green());
 
             // Show the elapsed game time and wheel power (only works with code method two)
             telemetry.addData("Status", "Run Time: " + hwmap.runtime.toString());

@@ -42,6 +42,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -72,6 +75,8 @@ public class Hardware_Map
     public DcMotor frontRight;
     public DcMotor backLeft;
     public DcMotor backRight;
+    public ColorSensor colorSensor;
+    public DistanceSensor distanceSensor;
     public BNO055IMU imu;
 
 
@@ -131,6 +136,8 @@ public class Hardware_Map
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        colorSensor = linearOpMode.hardwareMap.colorSensor.get("color_range");
+        distanceSensor = linearOpMode.hardwareMap.get(DistanceSensor.class,"color_sensor");
     }
 
     // STRAFING METHODS
