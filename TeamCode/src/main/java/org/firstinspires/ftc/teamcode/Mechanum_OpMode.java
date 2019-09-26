@@ -55,6 +55,7 @@ public class Mechanum_OpMode extends LinearOpMode {
 
     int driveSetting = 0;
     boolean driveSettingPressed;
+    int IMUReset = 0;
 
 
     // Declare OpMode members.
@@ -91,6 +92,16 @@ public class Mechanum_OpMode extends LinearOpMode {
             if(gamepad1.dpad_right == true)
             {
                 speed = 8;
+            }
+
+            if(gamepad1.left_bumper == true)
+            {
+                IMUReset = 1;
+            }
+            else if(gamepad1.left_bumper == false)
+            {
+                if(IMUReset == 1)
+                hwmap.resetHeading(this);
             }
 
             if(gamepad1.left_trigger > 0)
@@ -168,8 +179,8 @@ public class Mechanum_OpMode extends LinearOpMode {
             hwmap.backRight.setPower(hwmap.backRightPower);
 
 
-            telemetry.addData("Distance", hwmap.distanceSensor.getDistance(DistanceUnit.CM));
-            telemetry.addData("Color ","red (%d), green (%d), blue (%d)", hwmap.colorSensor.red(),hwmap.colorSensor.blue(),hwmap.colorSensor.green());
+            telemetry.addData("Distance", hwmap.distanceSensorAverage());
+            telemetry.addData("Color ","red (%.1f), green (%.1f), blue (%.1f)", hwmap.colorSensorRedAverage(),hwmap.colorSensorBlueAverage(),hwmap.colorSensorGreenAverage());
 
             // Show the elapsed game time and wheel power (only works with code method two)
             telemetry.addData("Status", "Run Time: " + hwmap.runtime.toString());

@@ -48,6 +48,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
@@ -100,22 +101,10 @@ public class Hardware_Map
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.loggingEnabled      = false;
 
-        imu = linearOpMode.hardwareMap.get(BNO055IMU.class, "imu");
+        // reset IMU
+        resetHeading(linearOpMode);
 
-        imu.initialize(parameters);
 
-        linearOpMode.telemetry.addData("Mode", "calibrating...");
-        linearOpMode.telemetry.update();
-
-        while (!linearOpMode.isStopRequested() && !imu.isGyroCalibrated())
-        {
-            linearOpMode.sleep(50);
-            linearOpMode.idle();
-        }
-
-        linearOpMode.telemetry.addData("Mode", "waiting for start");
-        linearOpMode.telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
-        linearOpMode.telemetry.update();
 
         // Set up the 4 motors so that they are recognized by the program
         frontLeft = linearOpMode.hardwareMap.get(DcMotor.class, "frontLeft");
@@ -136,10 +125,29 @@ public class Hardware_Map
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        colorSensor = linearOpMode.hardwareMap.colorSensor.get("color_range");
-        distanceSensor = linearOpMode.hardwareMap.get(DistanceSensor.class,"color_sensor");
+        colorSensor = linearOpMode.hardwareMap.colorSensor.get("color_sensor");
+        distanceSensor = linearOpMode.hardwareMap.get(DistanceSensor.class,"range_sensor");
+
     }
 
+    public void resetHeading(LinearOpMode linearOpMode)
+    {
+        imu = linearOpMode.hardwareMap.get(BNO055IMU.class, "imu");
+
+        imu.initialize(parameters);
+
+        linearOpMode.telemetry.addData("Mode", "calibrating...");
+        linearOpMode.telemetry.update();
+
+        while (!linearOpMode.isStopRequested() && !imu.isGyroCalibrated()) {
+            linearOpMode.sleep(50);
+            linearOpMode.idle();
+        }
+        linearOpMode.telemetry.addData("Mode", "waiting for start");
+        linearOpMode.telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
+        linearOpMode.telemetry.update();
+
+    }
     // STRAFING METHODS
 
     public void Forward(double power)
@@ -224,5 +232,53 @@ public class Hardware_Map
 
         //return globalAngle;
         return angles.firstAngle;
+    }
+    // Change average for how many readings we want
+
+    public double colorSensorRedAverage()
+    {
+        int samples = 10;
+        double average = 0;
+
+        for(int i =samples; i>0; i--)
+        {
+            average += colorSensor.red();
+        }
+        average = average/samples;
+        return average;
+    }
+    public double colorSensorBlueAverage()
+    {
+        int samples = 10;
+        double average = 0;
+        for(int i =samples; i>0; i--)
+        {
+            average += colorSensor.blue();
+        }
+        average = average/samples;
+        return average;
+    }
+    public double colorSensorGreenAverage()
+    {
+        int samples = 10;
+        double average = 0;
+
+        for(int i =samples; i>0; i--)
+        {
+            average += colorSensor.green();
+        }
+        average = average/samples;
+        return average;
+    }
+    public double distanceSensorAverage()
+    {
+        int samples = 10;
+        double average = 0;
+        for(int i =samples; i>0; i--)
+        {
+            average += distanceSensor.getDistance(DistanceUnit.CM);
+        }
+        average = average/samples;
+        return average;
     }
 }
