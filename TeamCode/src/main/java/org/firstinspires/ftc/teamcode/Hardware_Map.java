@@ -58,6 +58,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 //import static java.lang.Math.abs;
 
@@ -280,5 +281,21 @@ public class Hardware_Map
         }
         average = average/samples;
         return average;
+    }
+
+
+    public double brickColor(double red,double green,double blue)
+    {
+        Double[] rgb = {red,green,blue};
+
+        double max = Collections.max(Arrays.asList(rgb));
+
+        Double[] rgbNormalized = {red,green,blue};
+
+        for(int a = 0; a < rgb.length; a++)
+        {
+            rgbNormalized[a] = rgb[a]/max;
+        }
+        return 4;
     }
 }
