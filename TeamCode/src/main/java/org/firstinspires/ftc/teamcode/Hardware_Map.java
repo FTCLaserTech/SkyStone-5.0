@@ -284,11 +284,13 @@ public class Hardware_Map
     }
 
 
-    public double brickColor(double red,double green,double blue)
+    public int brickColor(double dist, double red,double green,double blue)
     {
         Double[] rgb = {red,green,blue};
 
         double max = Collections.max(Arrays.asList(rgb));
+
+        int retv = 0;
 
         Double[] rgbNormalized = {red,green,blue};
 
@@ -296,6 +298,18 @@ public class Hardware_Map
         {
             rgbNormalized[a] = rgb[a]/max;
         }
-        return 4;
+
+        if(dist < 50 ) {
+            if (rgbNormalized[0] == 1)
+            {
+                retv = 1;
+            }
+            else if (rgbNormalized[2] == 1)
+            {
+                retv = 2;
+            }
+        }
+
+        return retv;
     }
 }

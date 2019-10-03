@@ -186,6 +186,8 @@ public class Mechanum_OpMode extends LinearOpMode {
             telemetry.addData("Distance", hwmap.distanceSensorAverage());
             telemetry.addData("Color ","red (%.1f), green (%.1f), blue (%.1f)", hwmap.colorSensorRedAverage(),hwmap.colorSensorBlueAverage(),hwmap.colorSensorGreenAverage());
 
+            telemetry.addData("Brick Color ",hwmap.brickColor(hwmap.distanceSensorAverage(),hwmap.colorSensorRedAverage(),hwmap.colorSensorBlueAverage(),hwmap.colorSensorGreenAverage()));
+
             // Show the elapsed game time and wheel power (only works with code method two)
             telemetry.addData("Status", "Run Time: " + hwmap.runtime.toString());
             telemetry.addData("Wheel Power", "left (%.2f), right (%.2f)", hwmap.frontLeftPower, hwmap.frontRightPower, hwmap.backLeftPower, hwmap.backRightPower);
