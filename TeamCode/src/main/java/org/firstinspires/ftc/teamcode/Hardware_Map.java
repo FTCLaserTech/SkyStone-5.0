@@ -236,64 +236,63 @@ public class Hardware_Map
     }
     // Change average for how many readings we want
 
-    public double colorSensorRedAverage()
-    {
-        int samples = 10;
-        double average = 0;
+    //public double colorSensorRedAverage()
+    //{
+    //    int samples = 10;
+    //    double average = 0;
 
-        for(int i =samples; i>0; i--)
-        {
-            average += colorSensor.red();
-        }
-        average = average/samples;
-        return average;
-    }
-    public double colorSensorBlueAverage()
-    {
-        int samples = 10;
-        double average = 0;
-        for(int i =samples; i>0; i--)
-        {
-            average += colorSensor.blue();
-        }
-        average = average/samples;
-        return average;
-    }
-    public double colorSensorGreenAverage()
-    {
-        int samples = 10;
-        double average = 0;
+    //    for(int i =samples; i>0; i--)
+    //    {
+    //        average += colorSensor.red();
+    //    }
+    //    average = average/samples;
+    //    return average;
+    //}
+    //public double colorSensorBlueAverage()
+    //{
+    //    int samples = 10;
+    //    double average = 0;
+    //    for(int i =samples; i>0; i--)
+    //    {
+    //        average += colorSensor.blue();
+    //    }
+    //    average = average/samples;
+    //   return average;
+    //}
+    //public double colorSensorGreenAverage()
+    //{
+    //    int samples = 10;
+    //    double average = 0;
 
-        for(int i =samples; i>0; i--)
-        {
-            average += colorSensor.green();
-        }
-        average = average/samples;
-        return average;
-    }
-    public double distanceSensorAverage()
-    {
-        int samples = 10;
-        double average = 0;
-        for(int i =samples; i>0; i--)
-        {
-            average += distanceSensor.getDistance(DistanceUnit.CM);
-        }
-        average = average/samples;
-        return average;
-    }
+    //    for(int i =samples; i>0; i--)
+    //    {
+    //        average += colorSensor.green();
+    //    }
+    //    average = average/samples;
+    //    return average;
+    //}
+    //public double distanceSensorAverage()
+    //{
+    //    int samples = 10;
+    //    double average = 0;
+    //    for(int i =samples; i>0; i--)
+    //    {
+    //        average += distanceSensor.getDistance(DistanceUnit.CM);
+    //    }
+    //    average = average/samples;
+    //    return average;
+    //}
 
 
     public int brickColor(double dist, double red,double green,double blue)
     {
-        Double[] rgb = {red,green,blue};
+      Double[] rgb = {red,green,blue};
 
-        double max = Collections.max(Arrays.asList(rgb));
+       double max = Collections.max(Arrays.asList(rgb));
 
-        int retv = 0;
+       int retv = 0;
 
         Double[] rgbNormalized = {red,green,blue};
-
         for(int a = 0; a < rgb.length; a++)
         {
             rgbNormalized[a] = rgb[a]/max;

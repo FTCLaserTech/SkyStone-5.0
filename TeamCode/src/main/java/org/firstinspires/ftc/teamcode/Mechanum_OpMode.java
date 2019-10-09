@@ -98,29 +98,29 @@ public class Mechanum_OpMode extends LinearOpMode {
                 speed = 8;
             }
 
-            if(gamepad1.left_bumper == true)
-            {
-                IMUReset = 1;
-            }
-            else if(gamepad1.left_bumper == false)
-            {
-                if(IMUReset == 1)
-                hwmap.resetHeading(this);
-            }
+            //      9if(gamepad1.left_bumper == true)
+            //{
+            //    IMUReset = 1;
+            //}
+            //else if(gamepad1.left_bumper == false)
+            //{
+            //    if(IMUReset == 1)
+            //    hwmap.resetHeading(this);
+            //}
 
-            if(gamepad1.left_trigger > 0)
-            {
-                driveSettingPressed = true;
-            }
-            else if(driveSettingPressed == true)
-            {
-                driveSettingPressed = false;
-                driveSetting++;
-                if(driveSetting==2)
-                {
-                    driveSetting = 0;
-                }
-            }
+            //if(gamepad1.left_trigger > 0)
+            //{
+            //    driveSettingPressed = true;
+            //}
+            //else if(driveSettingPressed == true)
+            //{
+            //    driveSettingPressed = false;
+            //    driveSetting++;
+            //    if(driveSetting==2)
+            //    {
+            //        driveSetting = 0;
+            //    }
+            //}
 
 
             lastAngle = hwmap.getAngle();
@@ -183,10 +183,10 @@ public class Mechanum_OpMode extends LinearOpMode {
             hwmap.backRight.setPower(hwmap.backRightPower);
 
 
-            telemetry.addData("Distance", hwmap.distanceSensorAverage());
-            telemetry.addData("Color ","red (%.1f), green (%.1f), blue (%.1f)", hwmap.colorSensorRedAverage(),hwmap.colorSensorBlueAverage(),hwmap.colorSensorGreenAverage());
+            //telemetry.addData("Distance", hwmap.distanceSensorAverage());
+            //telemetry.addData("Color ","red (%.1f), green (%.1f), blue (%.1f)", hwmap.colorSensorRedAverage(),hwmap.colorSensorBlueAverage(),hwmap.colorSensorGreenAverage());
 
-            telemetry.addData("Brick Color ",hwmap.brickColor(hwmap.distanceSensorAverage(),hwmap.colorSensorRedAverage(),hwmap.colorSensorBlueAverage(),hwmap.colorSensorGreenAverage()));
+            telemetry.addData("Brick Color ",hwmap.brickColor(hwmap.distanceSensor.getDistance(DistanceUnit.CM),hwmap.colorSensor.red(),hwmap.colorSensor.blue(),hwmap.colorSensor.green()));
 
             // Show the elapsed game time and wheel power (only works with code method two)
             telemetry.addData("Status", "Run Time: " + hwmap.runtime.toString());
