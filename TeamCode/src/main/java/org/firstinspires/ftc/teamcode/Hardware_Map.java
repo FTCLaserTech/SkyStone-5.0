@@ -39,11 +39,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 //import com.qualcomm.robotcore.hardware.DigitalChannel;
 //import com.qualcomm.robotcore.hardware.PIDCoefficients;
 //import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -79,6 +81,7 @@ public class Hardware_Map
     public DcMotor backRight;
     public ColorSensor colorSensor;
     public DistanceSensor distanceSensor;
+    public TouchSensor touchSensor;
     public BNO055IMU imu;
 
 
@@ -128,6 +131,7 @@ public class Hardware_Map
 
         colorSensor = linearOpMode.hardwareMap.colorSensor.get("color_sensor");
         distanceSensor = linearOpMode.hardwareMap.get(DistanceSensor.class,"range_sensor");
+        touchSensor = linearOpMode.hardwareMap.touchSensor.get("ClawTouchSensor");
 
     }
 

@@ -192,6 +192,9 @@ public class Mechanum_OpMode extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + hwmap.runtime.toString());
             telemetry.addData("Wheel Power", "left (%.2f), right (%.2f)", hwmap.frontLeftPower, hwmap.frontRightPower, hwmap.backLeftPower, hwmap.backRightPower);
             telemetry.addData("1 imu heading", lastAngle);
+
+            telemetry.addData("Touch Sensor ", hwmap.touchSensor.getValue());
+
             telemetry.update();
         }
     }
